@@ -28,6 +28,7 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
 }
 
@@ -52,7 +53,7 @@ sourceSets{
 
 		// After gradle 7.1
 		java{
-			setSrcDirs(listOf("/src/test/intg","src/test/unit"))
+			setSrcDirs(listOf("src/test/intg","src/test/unit"))
 		}
 	}
 }
