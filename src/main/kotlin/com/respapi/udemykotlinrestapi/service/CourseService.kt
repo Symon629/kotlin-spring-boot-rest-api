@@ -37,6 +37,7 @@ class CourseService (val courseRepository: CourseRepository){
                 CourseDTO(it.id,it.name,it.category)
             }
         }else{
+            println("throws this exception")
             throw CourseNotFoundException("No course found for the passed int Id: $courseId ")
         }
     }

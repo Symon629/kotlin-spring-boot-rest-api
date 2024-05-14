@@ -2,9 +2,11 @@ package com.respapi.udemykotlinrestapi.contoller
 
 import com.respapi.udemykotlinrestapi.dto.CourseDTO
 import com.respapi.udemykotlinrestapi.entity.Course
+import com.respapi.udemykotlinrestapi.exception.CourseNotFoundException
 import com.respapi.udemykotlinrestapi.service.CourseService
 import mu.KLogging
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -39,8 +41,24 @@ class CourseController(val courseService: CourseService) {
     }
     @PutMapping("/{course_id}")
     @ResponseStatus(HttpStatus.OK)
-    fun modifyCourse(@PathVariable("course_id") courseId:Int ,@RequestBody courseDTO: CourseDTO ) =
-        courseService.updateCourse(courseId ,courseDTO)
+    fun modifyCourse(@PathVariable("course_id") courseId:Int ,@RequestBody courseDTO: CourseDTO ):ResponseEntity<Any>{
+
+        // We dont have to catch the exception since we have a global exception handler
+        // than catches the exception and sends the response entity back to the user
+        val updatedCourse = courseService.updateCourse(courseId, courseDTO)
+        return ResponseEntity.ok(updatedCourse)
+
+
+        // use the below method if you dont have a global exceeption handler using @ControllerAdvice
+//        return try {
+//            val updatedCourse = courseService.updateCourse(courseId, courseDTO)
+//            ResponseEntity.ok(updatedCourse)
+//        } catch (ex: CourseNotFoundException) {
+//            ResponseEntity.status(HttpStatus.NOT_FOUND).body(mapOf("error" to ex.message))
+//        } catch (ex: Exception) {
+//            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapOf("error" to "An internal server error occurred. Please try again later."))
+//        }
+    }
 
     @DeleteMapping("/{course_id}")
     @ResponseStatus(HttpStatus.OK)
