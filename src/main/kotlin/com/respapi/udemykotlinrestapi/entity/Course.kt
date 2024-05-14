@@ -1,16 +1,14 @@
 package com.respapi.udemykotlinrestapi.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Table
-import org.springframework.data.annotation.Id
+import jakarta.persistence.*
 
-@Entity()
+@Entity
 @Table(name="courses")
 data class Course (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id:Int?,
+    var name:String,
+    var category:String
 
 )

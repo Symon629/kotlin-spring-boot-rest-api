@@ -21,4 +21,5 @@ class GreetingControllerIntgTest {
         println(result);
         Assertions.assertEquals("$name , Hello from default Profile",result.responseBody)
     }
+
 }
