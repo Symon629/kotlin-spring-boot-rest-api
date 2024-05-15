@@ -4,6 +4,7 @@ import com.respapi.udemykotlinrestapi.dto.CourseDTO
 import com.respapi.udemykotlinrestapi.entity.Course
 import com.respapi.udemykotlinrestapi.exception.CourseNotFoundException
 import com.respapi.udemykotlinrestapi.service.CourseService
+import io.swagger.v3.oas.annotations.Operation
 import mu.KLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -24,6 +25,7 @@ class CourseController(val courseService: CourseService) {
     companion object : KLogging()
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create a new course")
     fun createCourse(@RequestBody courseDTO: CourseDTO):CourseDTO{
         logger.info("Course DTO coming in $courseDTO")
         val resultDto:CourseDTO =  courseService.createCourse(courseDTO)

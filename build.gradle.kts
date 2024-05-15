@@ -32,6 +32,12 @@ dependencies {
 	testImplementation("io.mockk:mockk:1.10.4")
 	testImplementation("com.ninja-squad:springmockk:3.0.1")
 	implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.4")
+//	implementation("org.springdoc:springdoc-openapi-ui:1.6.12")
+//	implementation("io.springfox:springfox-boot-starter:3.0.0")
+//	implementation("io.springfox:springfox-swagger-ui:3.0.0")
+//	implementation ("javax.servlet:javax.servlet-api:4.0.1")
+//	implementation ("org.springdoc:springdoc-openapi-ui:1.6.12")
 }
 
 tasks.withType<KotlinCompile> {

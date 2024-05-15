@@ -1,6 +1,10 @@
 spring:
   application:
     name: course-catalog-service
+  springdoc:
+      api-docs:
+        enabled: true
+
   dataSource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver

@@ -17,8 +17,7 @@ class GreetingControllerIntgTest {
 
     @Test
     fun retrieveGreeting() {
-        val result = webTestClient.get().uri("/v1/greetings/{name}",name).exchange().expectStatus().is2xxSuccessful.expectBody(String::class.java).returnResult()
-        println(result);
+        val result = webTestClient.get().uri("/v1/greetings/{name}",name).exchange().expectStatus().is2xxSuccessful.expectBody(String::class.java).returnResult();
         Assertions.assertEquals("$name , Hello from default Profile",result.responseBody)
     }
 
