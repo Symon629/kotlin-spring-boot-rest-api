@@ -53,11 +53,24 @@ class CourseControllerWebTestClient {
         Assertions.assertEquals("UpdatedCourse",updatedCourseDTO!!.name);
 
     }
-
+    @Test
     fun deleteCourse(){
         every { courseServiceMockk.deleteCourse(any()) } just runs
         val deleted = webTestClient.delete().uri("/v1/courses/{course_id}",100).exchange().expectStatus().isNoContent
     }
+
+    @Test
+    fun add_validation_error(){
+        val courseDTO = CourseDTO(null,"","");
+        every{courseServiceMockk.createCourse(any())} returns returnCourseDto(id=1)
+        // Now since the error is thrown at the web layer that is the controller layer you dont have to worry about
+        // service layer or the repository layer.
+        val error_response = webTestClient.post().uri("/v1/courses").bodyValue(courseDTO).exchange().expectStatus().isBadRequest.expectBody(String::class.java).returnResult().responseBody
+
+        Assertions.assertEquals(  "courseDto.name cannot be blank",error_response)
+    }
+
+
 
 
 }

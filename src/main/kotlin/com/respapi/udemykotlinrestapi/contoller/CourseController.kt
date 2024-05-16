@@ -5,9 +5,11 @@ import com.respapi.udemykotlinrestapi.entity.Course
 import com.respapi.udemykotlinrestapi.exception.CourseNotFoundException
 import com.respapi.udemykotlinrestapi.service.CourseService
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.validation.Valid
 import mu.KLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -20,13 +22,13 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/v1/courses")
+@Validated
 class CourseController(val courseService: CourseService) {
 
     companion object : KLogging()
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create a new course")
-    fun createCourse(@RequestBody courseDTO: CourseDTO):CourseDTO{
+    fun createCourse(@RequestBody @Valid courseDTO: CourseDTO):CourseDTO{
         logger.info("Course DTO coming in $courseDTO")
         val resultDto:CourseDTO =  courseService.createCourse(courseDTO)
         resultDto?.let {
