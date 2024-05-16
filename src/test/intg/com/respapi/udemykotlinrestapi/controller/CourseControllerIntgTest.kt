@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.util.UriComponentsBuilder
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -34,7 +35,7 @@ class CourseControllerIntgTest {
     fun addCourse(){
         val courseDto = CourseDTO(null,"Build Restful API's using spring boot and kotlin","Symon")
         val response = webTestClient.post().uri("/v1/courses").bodyValue(courseDto).exchange().expectStatus().is2xxSuccessful.expectBody(CourseDTO::class.java).returnResult().responseBody
-        println("response is"+response)
+        println("response is$response")
         Assertions.assertTrue {
             response!!.id !==null
         }
@@ -60,5 +61,13 @@ class CourseControllerIntgTest {
 
         Assertions.assertEquals("Spring Boot1",updatedCourseDTO!!.name)
 
+    }
+
+    @Test
+    fun retrieveCourse_byName(){
+        val url = UriComponentsBuilder.fromUriString("/v1/courses").queryParam("course_name","Spring").toUriString()
+        val courses = webTestClient.get().uri(url).exchange().expectStatus().isOk.expectBodyList(CourseDTO::class.java).returnResult().responseBody
+        println("Courses are $courses")
+        Assertions.assertEquals(2,courses!!.size)
     }
 }

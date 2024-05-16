@@ -37,7 +37,7 @@ class CourseControllerWebTestClient {
 
     @Test
     fun retrieveAllCourse(){
-        every { courseServiceMockk.getAllCourses() }.returnsMany(listOf(returnCourseDto(id=1), returnCourseDto(id=2,"Spring Boot kotlin","Kotlin")))
+        every { courseServiceMockk.getAllCourses(any()) }.returnsMany(listOf(returnCourseDto(id=1), returnCourseDto(id=2,"Spring Boot kotlin","Kotlin")))
         val courseDTOs = webTestClient.get().uri("v1/courses").exchange().expectStatus().isOk.expectBodyList(CourseDTO ::class.java).returnResult().responseBody
         println("Course DTOs $courseDTOs")
         Assertions.assertEquals(2,courseDTOs!!.size)
