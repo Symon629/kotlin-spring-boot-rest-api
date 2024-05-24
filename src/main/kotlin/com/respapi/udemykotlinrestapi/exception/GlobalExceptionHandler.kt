@@ -24,7 +24,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         status: HttpStatusCode,
         request: WebRequest
     ): ResponseEntity<Any>? {
-        logger.error("MEthod argument not valid exception:${ex.message}",ex);
+        logger.error("Method argument not valid exception:${ex.message}",ex);
         val errors = ex.bindingResult.allErrors.map{error-> error.defaultMessage!!}.sorted()
         logger.info("error,${errors}")
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.joinToString(","){ it })
@@ -39,7 +39,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
             "message" to ex.message,
             "path" to request.getDescription(false)
         )
-        logger.error("MEthod argument not valid exception:${ex.message}",ex);
+        logger.error("Method argument not valid exception:${ex.message}",ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body)
     }
 

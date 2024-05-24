@@ -3,22 +3,29 @@ package com.respapi.udemykotlinrestapi.service
 import com.respapi.udemykotlinrestapi.dto.CourseDTO
 import com.respapi.udemykotlinrestapi.entity.Course
 import com.respapi.udemykotlinrestapi.exception.CourseNotFoundException
+import com.respapi.udemykotlinrestapi.exception.InstructorNotFoundException
 import com.respapi.udemykotlinrestapi.repository.CourseRepository
 import mu.KLogging
 import org.springframework.stereotype.Service
 
 @Service
-class CourseService (val courseRepository: CourseRepository){
+class CourseService (val courseRepository: CourseRepository,val instructorService: InstructorService){
     companion object:KLogging()
 
     fun createCourse( courseDto: CourseDTO) :CourseDTO{
+
+        val instructor = instructorService.findInstructorById(courseDto.instructorId!!)
+        if(!instructor.isPresent){
+            throw InstructorNotFoundException("Instructor not found with the id ${courseDto.instructorId}" );
+        }
+
        val courseEntity =  courseDto.let {
-            Course(null,it.name,it.category)
+            Course(null,it.name,it.category,instructor.get())
         }
         courseRepository.save(courseEntity)
-        logger.info("Saved course $courseEntity")
+
         return courseEntity.let {
-            CourseDTO(it.id,it.name,it.category)
+            CourseDTO(it.id,it.name,it.category,it.instructor!! .id)
         }
     }
 

@@ -4,6 +4,7 @@ import com.respapi.udemykotlinrestapi.dto.CourseDTO
 import com.respapi.udemykotlinrestapi.entity.Course
 import com.respapi.udemykotlinrestapi.exception.CourseNotFoundException
 import com.respapi.udemykotlinrestapi.service.CourseService
+import com.respapi.udemykotlinrestapi.service.InstructorService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import mu.KLogging

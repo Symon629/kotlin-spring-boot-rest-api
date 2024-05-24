@@ -26,7 +26,7 @@ class CourseControllerWebTestClient {
 
     @Test
     fun addCourse(){
-        val courseDTO = CourseDTO(null, "RestApi","Symon-Java")
+        val courseDTO = CourseDTO(null, "RestApi","Symon-Java",1)
         every {courseServiceMockk.createCourse(any()) } returns  returnCourseDto(id=1);
 
         var savedCourse = webTestClient.post().uri("/v1/courses").bodyValue(courseDTO).exchange().expectStatus().is2xxSuccessful.expectBody(CourseDTO::class.java).returnResult().responseBody
@@ -61,7 +61,7 @@ class CourseControllerWebTestClient {
 
     @Test
     fun add_validation_error(){
-        val courseDTO = CourseDTO(null,"","");
+        val courseDTO = CourseDTO(null,"","",1);
         every{courseServiceMockk.createCourse(any())} returns returnCourseDto(id=1)
         // Now since the error is thrown at the web layer that is the controller layer you dont have to worry about
         // service layer or the repository layer.

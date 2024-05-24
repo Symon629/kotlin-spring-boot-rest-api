@@ -3,6 +3,7 @@ package com.respapi.udemykotlinrestapi.controller
 import com.respapi.udemykotlinrestapi.dto.CourseDTO
 import com.respapi.udemykotlinrestapi.entity.Course
 import com.respapi.udemykotlinrestapi.repository.CourseRepository
+import com.respapi.udemykotlinrestapi.repository.InstructorRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
@@ -22,10 +23,16 @@ class CourseControllerIntgTest {
     @Autowired
     lateinit var courseRepository: CourseRepository
 
+    @Autowired
+    lateinit var  instructorRepository: InstructorRepository
+
     @BeforeEach
     fun setUp(){
         courseRepository.deleteAll()
-        val courses = Util().CourseEntityList();
+        val instructor =  instructorEntity()
+        instructorRepository.save(instructor)
+
+        val courses = courseEntityList(instructor);
         courseRepository.saveAll(courses);
 
     }
@@ -33,7 +40,9 @@ class CourseControllerIntgTest {
 
     @Test
     fun addCourse(){
-        val courseDto = CourseDTO(null,"Build Restful API's using spring boot and kotlin","Symon")
+        val instructor  = instructorRepository.findAll().first();
+
+        val courseDto = CourseDTO(null,"Build Restful API's using spring boot and kotlin","Symon",instructor!!.id)
         val response = webTestClient.post().uri("/v1/courses").bodyValue(courseDto).exchange().expectStatus().is2xxSuccessful.expectBody(CourseDTO::class.java).returnResult().responseBody
         println("response is$response")
         Assertions.assertTrue {
@@ -50,12 +59,14 @@ class CourseControllerIntgTest {
     }
     @Test
     fun updateCourse(){
+
+        val instructor  = instructorRepository.findAll().first();
         // we will need an existing resource
         // from that we will create
-        val course = Course(null,"Spring Boot","Java")
+        val course = Course(null,"Spring Boot","Java",instructor)
         courseRepository.save(course)
 
-        val updatedCourse  = CourseDTO(null,"Spring Boot1","Java");
+        val updatedCourse  = CourseDTO(null,"Spring Boot1","Java",course.instructor!!.id);
 
         val updatedCourseDTO = webTestClient.put().uri("/v1/courses/{course_id}",course.id).bodyValue(updatedCourse).exchange().expectStatus().isOk.expectBody(CourseDTO::class.java).returnResult().responseBody
 
